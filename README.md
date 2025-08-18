@@ -126,7 +126,7 @@ Follow these instructions to get a local copy of the project up and running for 
 -   [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
 -   [Node.js and npm](https://nodejs.org/) (for the Web Client)
 -   [PostgreSQL](https://www.postgresql.org/download/) Server
--   A code editor like [VS Code](https://code.visualstudio.com/) or [Visual Studio](https://visualstudio.microsoft.com/)
+-   A code editor like [VS Code](https://code.visualstudio.com/) or [Visual Studio](https://visualstudio.microsoft.com/). (We highly recommend Visual Studio 2022)
 
 ### Installation
 
