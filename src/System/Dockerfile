@@ -28,13 +28,13 @@ WORKDIR /source
 # Copy the project files first. This is a key optimization for Docker layer caching.
 # The 'dotnet restore' step will only be re-run if these .csproj files change,
 # not every time a .cs source file is modified.
-COPY API/StorIA-Lite.API.csproj API/
+COPY API/StorIA-Lite.Api.csproj API/
 COPY Application/StorIA-Lite.Application.csproj Application/
 COPY Infrastructure/StorIA-Lite.Infrastructure.csproj Infrastructure/
 COPY Domain/StorIA-Lite.Domain.csproj Domain/
 
 # Restore NuGet packages for all projects based on the copied .csproj files.
-RUN dotnet restore API/StorIA-Lite.API.csproj
+RUN dotnet restore API/StorIA-Lite.Api.csproj
 
 # Copy the rest of the source code into the container.
 COPY . .
@@ -42,7 +42,7 @@ COPY . .
 # Publish the application for release. This compiles the code and packages all
 # necessary files for deployment into the '/app/publish' directory.
 # The '--no-restore' flag is used because we already restored packages in a previous step.
-RUN dotnet publish API/StorIA-Lite.API.csproj -c Release -o /app/publish --no-restore
+RUN dotnet publish API/StorIA-Lite.Api.csproj -c Release -o /app/publish --no-restore
 
 
 # === Stage 2: Final Production Image ===
@@ -66,4 +66,4 @@ ENV ASPNETCORE_URLS=http://+:8080;https://+:8081
 
 # Define the entry point for the container. This is the command that will be executed
 # when the container starts, launching the .NET application.
-ENTRYPOINT ["dotnet", "StorIA-Lite.API.dll"]
+ENTRYPOINT ["dotnet", "StorIA-Lite.Api.dll"]
