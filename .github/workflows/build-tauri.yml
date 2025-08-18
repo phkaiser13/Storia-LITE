@@ -20,37 +20,54 @@ jobs:
       with:
         node-version: '20'
 
-    - name: Setup Rust
+    - name: Setup Rust (stable)
       uses: dtolnay/rust-toolchain@stable
 
     - name: Add Windows target
       if: runner.os == 'Windows'
       run: rustup target add x86_64-pc-windows-msvc
 
-    - name: Install Tauri CLI
+    - name: Install Tauri CLI (global)
       run: npm install -g @tauri-apps/cli
 
+    # 1) Frontend: instala deps e build da web app (onde está seu package.json do frontend)
     - name: Install frontend dependencies
-      run: npm install
-      working-directory: ./src/WebClient # <- CORRETO
+      working-directory: ./src/WebClient
+      run: npm ci
 
+    - name: Build frontend
+      working-directory: ./src/WebClient
+      run: npm run build
+
+    # 2) Tauri project deps (se você usar node deps no projeto tauri)
+    - name: Install Tauri project dependencies (if any)
+      working-directory: ./src/client/tauri
+      run: |
+        if [ -f package.json ]; then npm ci; fi
+
+    # 3) Build Tauri (rodando na pasta src-tauri onde está tauri.conf.json)
     - name: Build Tauri application
-      run: tauri build # <- MUDANÇA AQUI
-      working-directory: ./src/Client/Tauri # <- E AQUI
+      working-directory: ./src/client/tauri/src-tauri
+      run: |
+        # show current dir for debug (opcional)
+        pwd
+        ls -la
+        tauri build
 
+    # Upload artifacts (paths case-sensitive)
     - name: Upload Windows Artifact
       if: runner.os == 'Windows'
       uses: actions/upload-artifact@v4
       with:
         name: tauri-build-windows
-        path: src/Client/Tauri/src-tauri/target/release/bundle/msi/*.msi
+        path: src/client/tauri/src-tauri/target/release/bundle/msi/*.msi
 
     - name: Upload macOS Artifact
       if: runner.os == 'macOS'
       uses: actions/upload-artifact@v4
       with:
         name: tauri-build-macos
-        path: src/Client/Tauri/src-tauri/target/release/bundle/dmg/*.dmg
+        path: src/client/tauri/src-tauri/target/release/bundle/dmg/*.dmg
 
     - name: Upload Linux Artifact
       if: runner.os == 'Linux'
@@ -58,5 +75,5 @@ jobs:
       with:
         name: tauri-build-linux
         path: |
-          src/Client/Tauri/src-tauri/target/release/bundle/appimage/*.AppImage
-          src/Client/Tauri/src-tauri/target/release/bundle/deb/*.deb
+          src/client/tauri/src-tauri/target/release/bundle/appimage/*.AppImage
+          src/client/tauri/src-tauri/target/release/bundle/deb/*.deb
