@@ -36,7 +36,7 @@ jobs:
 
     - name: Build Tauri application
       run: npm run tauri build
-      working-directory: ./src/WebClient
+      working-directory: ./src/Client/Tauri
 
     - name: Upload Windows Artifact
       if: runner.os == 'Windows'
