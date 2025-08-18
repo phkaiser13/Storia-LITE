@@ -5,22 +5,22 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/OWNER/REPO/actions">
-    <img src="https://img.shields.io/github/actions/workflow/status/OWNER/REPO/dotnet.yml?style=for-the-badge" alt="Build Status" />
+  <a href="https://github.com/phkaiser13/Storia-LITE/actions">
+    <img src="https://img.shields.io/github/actions/workflow/status/phkaiser13/Storia-LITE/dotnet.yml?style=for-the-badge" alt="Build Status" />
   </a>
   <a href="LICENSE">
-    <img src="https://img.shields.io/github/license/OWNER/REPO?style=for-the-badge" alt="License" />
+    <img src="https://img.shields.io/github/license/phkaiser13/Storia-LITE?style=for-the-badge" alt="License" />
   </a>
-  <a href="https://github.com/OWNER/REPO/stargazers">
-    <img src="https://img.shields.io/github/stars/OWNER/REPO?style=for-the-badge" alt="GitHub stars" />
+  <a href="https://github.com/phkaiser13/Storia-LITE/stargazers">
+    <img src="https://img.shields.io/github/stars/phkaiser13/Storia-LITE?style=for-the-badge" alt="GitHub stars" />
   </a>
-  <a href="https://github.com/OWNER/REPO/issues">
-    <img src="https://img.shields.io/github/issues/OWNER/REPO?style=for-the-badge" alt="GitHub issues" />
+  <a href="https://github.com/phkaiser13/Storia-LITE/issues">
+    <img src="https://img.shields.io/github/issues/phkaiser13/Storia-LITE?style=for-the-badge" alt="GitHub issues" />
   </a>
 </p>
 
 <p align="center">
-  <strong>StorIA-LITE</strong> is a powerful, flexible, and open-source inventory management system designed to bring efficiency and clarity to your stock control processes. Built with a modern technology stack and a clean, decoupled architecture, StorIA-LITE is ideal for small to medium-sized businesses, warehouses, and individuals who need a reliable way to track items, manage movements, and generate insightful reports.
+  <strong>StorIA-LITE</strong> is a powerful, flexible, and open-source inventory management system designed to bring efficiency and clarity to your stock control processes. Built with a modern technology stack and a clean, decoupled architecture, StorIA-LITE is ideal for small to medium-sized businesses, warehouses, and individuals who need a reliable way to track items, manage movements, and generate insightful Storia-LITErts.
 </p>
 
 <p align="center">
@@ -69,7 +69,7 @@ StorIA-LITE provides a robust set of features to cover all essential inventory m
 - **User Management**: Secure user registration and authentication system with role-based access control (RBAC).
 - **Authentication**: Modern JWT-based authentication to secure your API endpoints.
 - **Dashboard Analytics**: A comprehensive dashboard that provides an at-a-glance overview of key inventory metrics, such as total items, stock levels, and recent movements.
-- **Reporting**: Generate detailed reports on inventory status, movement history, and more, allowing for data-driven decision-making.
+- **Storia-LITErting**: Generate detailed Storia-LITErts on inventory status, movement history, and more, allowing for data-driven decision-making.
 - **Search and Pagination**: Efficiently search and navigate through large sets of items and movements.
 
 ---
@@ -130,7 +130,7 @@ Follow these instructions to get a local copy of the project up and running for 
 
 ### Installation
 
-1.  **Clone the repository:**
+1.  **Clone the Storia-LITEsitory:**
     ```bash
     git clone https://github.com/Vytruve/storia-lite.git
     cd storia-lite
@@ -214,7 +214,7 @@ Once the backend API is running, you can access the interactive Swagger document
 
 ## ☁️ Deployment
 
-The repository includes Kubernetes deployment files (`.yaml`) in the `src/System/Deploy` directory. These can be used as a template for deploying the application to a Kubernetes cluster.
+The Storia-LITEsitory includes Kubernetes deployment files (`.yaml`) in the `src/System/Deploy` directory. These can be used as a template for deploying the application to a Kubernetes cluster.
 
 A `Dockerfile` is also provided in `src/System` to containerize the backend API.
 
