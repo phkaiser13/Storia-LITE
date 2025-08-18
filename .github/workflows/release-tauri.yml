@@ -23,15 +23,10 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20' # Define a versão do Node.js
+          node-version: '20'
 
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@stable
-
-      - name: Install frontend dependencies
-        # Roda o npm install dentro da pasta do seu projeto web
-        run: npm install
-        working-directory: ./src/WebClient
 
       - name: Install dependencies for Linux (Ubuntu)
         if: matrix.platform == 'ubuntu-latest'
@@ -39,11 +34,18 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev patchelf
 
+      - name: Install frontend dependencies
+        run: npm install
+        working-directory: ./src/WebClient
+
+      # PASSO ADICIONADO: Construir o frontend
+      - name: Build frontend
+        run: npm run build
+        working-directory: ./src/WebClient
+
       - name: Build Tauri application
-        # Usa a action oficial do Tauri que cuida de todo o processo de build
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          # Aponta para a pasta do projeto Tauri
           projectPath: './src/Client/Tauri'

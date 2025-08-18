@@ -7,7 +7,7 @@
     "frontendDist": "../../../WebClient/dist",
     "devUrl": "http://localhost:5173",
     "beforeDevCommand": "npm --prefix ../../../WebClient run dev",
-    "beforeBuildCommand": "npm --prefix ../../../WebClient run build"
+    "beforeBuildCommand": ""
   },
   "app": {
     "windows": [
