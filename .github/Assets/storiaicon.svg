@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="1042.3376 30.1963 271.8595 271.8594" width="271.86px" height="271.859px">
+	<defs>
+		<linearGradient id="gradERPIcon" x1="0%" y1="0%" x2="0%" y2="100%">
+			<stop offset="0" stop-color="#4A90E2"/>
+			<stop offset="1" stop-color="#9013FE"/>
+		</linearGradient>
+		<filter id="shadowIcon" x="-20%" y="-20%" width="140%" height="140%">
+			<feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000" flood-opacity="0.3"/>
+		</filter>
+		<filter id="shadow" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
+			<feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000" flood-opacity="0.12"/>
+		</filter>
+	</defs>
+	<rect x="129.661" y="96.173" width="85.554" height="85.554" rx="3" ry="3" fill="url(#gradERPIcon)" filter="url(#shadowIcon)" style="stroke-width: 1; transform-origin: 172.438px 138.95px;" transform="matrix(0.74314511, -0.6691311, 0.6691311, 0.74314511, 930.31257023, 23.21872456)"/>
+	<rect x="236.605" y="96.173" width="85.554" height="85.554" rx="3" ry="3" fill="url(#gradERPIcon)" opacity="0.85" filter="url(#shadowIcon)" style="stroke-width: 1; transform-origin: 279.382px 138.95px;" transform="matrix(0.74314511, -0.6691311, 0.6691311, 0.74314511, 902.84335618, -48.34074661)"/>
+	<rect x="129.661" y="203.116" width="85.554" height="85.554" rx="3" ry="3" fill="url(#gradERPIcon)" opacity="0.7" filter="url(#shadowIcon)" style="stroke-width: 1; transform-origin: 172.438px 245.893px;" transform="matrix(0.74314511, -0.6691311, 0.6691311, 0.74314511, 1001.87146312, -4.25021711)"/>
+	<rect x="236.605" y="203.116" width="85.554" height="85.554" rx="3" ry="3" fill="url(#gradERPIcon)" opacity="0.6" filter="url(#shadowIcon)" style="stroke-width: 1; transform-origin: 279.382px 245.893px;" transform="matrix(0.74314511, -0.6691311, 0.6691311, 0.74314511, 974.40224906, -75.80970353)"/>
+	<path d="M 1131.8 126.388 L 1153.18 126.388" stroke="url(#gradERPIcon)" stroke-width="3" stroke-linecap="round" style="stroke-width: 3; transform-origin: 1142.49px 126.388px;" transform="matrix(0.74314633, -0.66912702, 0.66914021, 0.74318642, -0.00370265, -0.0074053)"/>
+	<path d="M 1138.53 191.212 L 1138.53 212.602" stroke="url(#gradERPIcon)" stroke-width="3" stroke-linecap="round" style="stroke-width: 3; transform-origin: 1138.53px 201.907px;" transform="matrix(0.74313058, -0.6691206, 0.66906787, 0.74314589, 0.03309024, -0.00609557)"/>
+	<g fill="#fff" filter="url(#shadow)" transform="matrix(1, 0, 0, 1, 1046.02880859375, 17.977230072021456)">
+		<rect x="80" y="120" width="20" height="80" rx="4" ry="4"/>
+		<rect x="120" y="100" width="20" height="100" rx="4" ry="4"/>
+		<rect x="160" y="80" width="20" height="120" rx="4" ry="4"/>
+	</g>
+</svg>
