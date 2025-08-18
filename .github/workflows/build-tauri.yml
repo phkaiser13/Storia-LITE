@@ -29,21 +29,19 @@ jobs:
         if: runner.os == 'Windows'
         run: rustup target add x86_64-pc-windows-msvc
 
-      # Passo 1: Instalar as dependências do frontend (incluindo o Tauri CLI)
-      # O diretório de trabalho é o do seu projeto Vite/TS.
-      - name: Install frontend dependencies
+      # Passo 1: Instalar dependências do frontend e a CLI do Tauri
+      # Este passo agora cuida de toda a instalação necessária.
+      - name: Install dependencies
         working-directory: ./src/WebClient
         run: npm install
 
       # Passo 2: Construir a aplicação Tauri
-      # Este comando é executado a partir do WebClient, que contém o script "tauri".
-      # O Tauri CLI irá então ler a configuração em ../Client/Tauri/src-tauri/tauri.conf.json
-      # e executar o 'beforeBuildCommand' para compilar o frontend antes de empacotar.
+      # O "npm run build" do frontend será executado automaticamente pelo "beforeBuildCommand"
       - name: Build Tauri application
         working-directory: ./src/WebClient
         run: npm run tauri build
 
-      # Passo 3: Upload dos Artefatos (caminhos a partir da raiz do repositório)
+      # Passo 3: Upload dos Artefatos
       - name: Upload Windows Artifact
         if: runner.os == 'Windows'
         uses: actions/upload-artifact@v4
