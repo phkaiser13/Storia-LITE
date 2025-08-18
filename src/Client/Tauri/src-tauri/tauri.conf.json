@@ -27,10 +27,10 @@
     "active": true,
     "targets": "all",
     "icon": [
-      "../Resources/AppIcon/appicon.ico"
+      "../../WebClient/Resources/AppIcon/appicon.ico"
     ],
     "resources": [
-      "../Resources"
+      "../../WebClient/Resources"
     ]
   }
 }
