@@ -70,7 +70,10 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4 # Added checkout step
+      # Adicione este passo para clonar o repositório
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Download all artifacts
         uses: actions/download-artifact@v4
         with:
@@ -81,17 +84,26 @@ jobs:
 
       - name: Create Release
         id: create_release
+        uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh release create ${{ github.event.inputs.version }} --generate-notes
+        with:
+          tag_name: ${{ github.event.inputs.version }}
+          release_name: Release ${{ github.event.inputs.version }}
+          draft: false
+          prerelease: false
 
+      # Script de upload corrigido
       - name: Upload Release Assets
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           for dir in artifacts/*; do
-            for file in "$dir"/*; do
-              gh release upload ${{ github.event.inputs.version }} "$file" --clobber
-            done
+            if [ -d "$dir" ]; then
+              for file in "$dir"/*; do
+                if [ -f "$file" ]; then
+                  gh release upload ${{ github.event.inputs.version }} "$file" --clobber
+                fi
+              done
+            fi
           done
