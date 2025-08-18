@@ -29,9 +29,9 @@ namespace StorIA.Core.Application.Services
         private readonly IUnitOfWork _unitOfWork;
 
         /// <summary>
-        * Initializes a new instance of the<see cref = "DashboardService" /> class.
-        * </summary>
-        * <param name = "unitOfWork" > The unit of work for accessing repositories.</param>
+        ///  Initializes a new instance of the<see cref = "DashboardService" /> class.
+        ///  </summary>
+        ///  <param name = "unitOfWork" > The unit of work for accessing repositories.</param>
         public DashboardService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;

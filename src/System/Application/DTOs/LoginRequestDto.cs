@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright (C) 2025 Storia-LITE, an open-source software by TruveSoftware
  * (a division of Vytruve.org)
  * 
@@ -20,8 +20,8 @@ using System.ComponentModel.DataAnnotations;
 namespace StorIA.Core.Application.DTOs
 {
     /// <summary>
-    * Data Transfer Object(DTO) that represents the input data for a login request.
-    * This class is used to deserialize the HTTP request body.
+    /// * Data Transfer Object(DTO) that represents the input data for a login request.
+    ///* This class is used to deserialize the HTTP request body.
     /// </summary>
     public class LoginRequestDto
     {
