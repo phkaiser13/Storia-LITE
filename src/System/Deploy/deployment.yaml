@@ -1,0 +1,154 @@
+#
+# Copyright (C) 2025 Storia-LITE, an open-source software by TruveSoftware
+# (a division of Vytruve.org)
+# 
+# Original Author: Pedro Henrique / phkaiser13
+# 
+# Description:
+#   This Kubernetes Deployment manifest defines the desired state for the StorIA-LITE API.
+#   It manages the creation, scaling, and lifecycle of the application Pods. This file
+#   specifies the container image to use, injects configuration from ConfigMaps and Secrets
+#   as environment variables, sets resource limits, and configures health checks
+#   (liveness and readiness probes) to ensure application reliability.
+# 
+# More information: https://vytruve.org
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  # The name of the Deployment. This will be the prefix for the Pod names it creates.
+  name: storia-lite-api-deployment
+  # The namespace where this Deployment will be created. Must match other resources.
+  namespace: storia-lite
+  labels:
+    # Labels are key/value pairs that are attached to objects. They are used to organize and select subsets of objects.
+    app: storia-lite-api
+spec:
+  # The number of identical Pods to run. Using more than 1 replica provides high availability.
+  replicas: 2
+  # The selector determines which Pods this Deployment manages. It must match the labels in the Pod template.
+  selector:
+    matchLabels:
+      app: storia-lite-api
+  # The template for the Pods that will be created by this Deployment.
+  template:
+    metadata:
+      labels:
+        # These labels are applied to each Pod, allowing the Deployment's selector to find them.
+        app: storia-lite-api
+    spec:
+      containers:
+        - name: storia-lite-api
+          # IMPORTANT: You must replace this with the path to your container image in a registry
+          # like Docker Hub, Google Container Registry (GCR), Amazon ECR, etc.
+          image: your-container-registry/storia-lite-api:latest
+          ports:
+            # The port that the container exposes. This should match the ASPNETCORE_URLS port.
+            - containerPort: 8080
+          # Environment variables passed to the container.
+          env:
+            # --- Inject settings from the ConfigMap ---
+            - name: ASPNETCORE_URLS
+              valueFrom:
+                configMapKeyRef:
+                  name: storia-lite-config # References the 'storia-lite-config' ConfigMap
+                  key: ASPNETCORE_URLS      # Uses the value of the 'ASPNETCORE_URLS' key
+
+            # This constructs the database connection string inside the container.
+            # It uses a feature of the shell inside the container to substitute the $(VAR_NAME) placeholders
+            # with the values of other environment variables defined below.
+            - name: ConnectionStrings__DefaultConnection
+              value: "Host=$(DB_HOST);Port=$(DB_PORT);Database=$(DB_NAME);Username=$(DB_USER);Password=$(DB_PASSWORD);SslMode=Disable;Trust Server Certificate=true"
+            
+            - name: JwtSettings__Issuer
+              valueFrom:
+                configMapKeyRef:
+                  name: storia-lite-config
+                  key: JWT_ISSUER
+            - name: JwtSettings__Audience
+              valueFrom:
+                configMapKeyRef:
+                  name: storia-lite-config
+                  key: JWT_AUDIENCE
+            - name: JwtSettings__ExpiryInMinutes
+              valueFrom:
+                configMapKeyRef:
+                  name: storia-lite-config
+                  key: JWT_EXPIRY_MINUTES
+            - name: JwtSettings__RefreshTokenExpiryInDays
+              valueFrom:
+                configMapKeyRef:
+                  name: storia-lite-config
+                  key: JWT_REFRESH_TOKEN_EXPIRY_DAYS
+
+            # --- Inject sensitive data from the Secret ---
+            - name: JwtSettings__Secret
+              valueFrom:
+                secretKeyRef:
+                  name: storia-lite-secret # References the 'storia-lite-secret' Secret
+                  key: JWT_SECRET         # Uses the value of the 'JWT_SECRET' key
+
+            # --- Helper variables for constructing the Connection String ---
+            # These variables are injected from the ConfigMap and Secret and are then used by the
+            # 'ConnectionStrings__DefaultConnection' variable above.
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: storia-lite-config
+                  key: DB_HOST
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: storia-lite-config
+                  key: DB_PORT
+            - name: DB_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: storia-lite-config
+                  key: DB_USER
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: storia-lite-secret # The database password is securely fetched from the Secret
+                  key: DB_PASSWORD
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: storia-lite-config
+                  key: DB_NAME
+
+          # Resource requests and limits for the container.
+          # This is crucial for cluster stability and resource management.
+          resources:
+            # 'requests' are the minimum resources guaranteed by Kubernetes for the container.
+            requests:
+              memory: "256Mi" # 256 Mebibytes of memory
+              cpu: "250m"    # 250 millicores (0.25 of a CPU core)
+            # 'limits' are the maximum resources the container is allowed to use.
+            limits:
+              memory: "512Mi" # 512 Mebibytes of memory
+              cpu: "500m"    # 500 millicores (0.5 of a CPU core)
+
+          # Liveness probe checks if the application is running.
+          # If this probe fails, Kubernetes will restart the container.
+          livenessProbe:
+            httpGet:
+              # NOTE: Your application must expose a health check endpoint at this path.
+              # This endpoint should return a 2xx status code if the app is healthy.
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 15 # Wait 15 seconds before the first probe.
+            periodSeconds: 20       # Check every 20 seconds.
+
+          # Readiness probe checks if the application is ready to accept traffic.
+          # If this probe fails, Kubernetes will remove the Pod from the Service's endpoints.
+          readinessProbe:
+            httpGet:
+              # This often points to the same endpoint as the liveness probe.
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 5 # Wait 5 seconds before the first probe.
+            periodSeconds: 10      # Check every 10 seconds.

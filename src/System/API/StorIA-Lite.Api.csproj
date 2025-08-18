@@ -1,0 +1,46 @@
+<!--
+ * Copyright (C) 2025 Storia-LITE, an open-source software by TruveSoftware
+ * (a division of Vytruve.org)
+ * 
+ * Original Author: Pedro Henrique / phkaiser13
+ * 
+ * Description:
+ *   This is the project file for the StorIA-LITE Web API (Presentation Layer).
+ *   It defines the project's target framework, dependencies on other project
+ *   layers (Application, Infrastructure), and required NuGet packages for features
+ *   like authentication, API documentation, and database access.
+ * 
+ * More information: https://vytruve.org
+ *
+ * SPDX-License-Identifier: Apache-2.0
+-->
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<!-- Defines the core properties of the project. -->
+	<PropertyGroup>
+		<!-- Specifies the target framework for the application. -->
+		<TargetFramework>net8.0</TargetFramework>
+		<!-- Enables nullable reference types to help prevent null reference exceptions. -->
+		<Nullable>enable</Nullable>
+		<!-- Enables implicit global using directives for common namespaces. -->
+		<ImplicitUsings>enable</ImplicitUsings>
+	</PropertyGroup>
+
+	<!-- Includes references to other projects within this solution. -->
+	<!-- This establishes the dependency hierarchy (e.g., API depends on Application and Infrastructure). -->
+	<ItemGroup>
+		<ProjectReference Include="..\Application\StorIA-Lite.Application.csproj" />
+		<ProjectReference Include="..\Infrastructure\StorIA-Lite.Infrastructure.csproj" />
+	</ItemGroup>
+
+	<!-- Manages NuGet package dependencies required for the API layer. -->
+	<ItemGroup>
+		<!-- Enables the application to use JWT Bearer authentication. -->
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.7" />
+		<!-- Provides tools for generating OpenAPI/Swagger documentation for the API. -->
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+		<!-- Includes core functionalities for Entity Framework Core with relational databases. -->
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.7" />
+	</ItemGroup>
+
+</Project>

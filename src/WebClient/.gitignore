@@ -1,0 +1,63 @@
+# ########## Logs ##########
+# Ficheiros de log
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ########## Dependências ##########
+# Pasta de dependências do Node.js
+node_modules
+
+# ########## Ficheiros de Build ##########
+# Pasta de build do frontend (Vite)
+dist
+dist-ssr
+
+# ########## Tauri / Rust ##########
+# Pasta de build do Rust/Tauri
+src-tauri/target
+src-tauri/Cargo.lock
+# Ficheiros de manifesto gerados pelo Tauri
+src-tauri/gen
+
+# ########## Ficheiros de Sistema ##########
+# Ficheiros do macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Ficheiros do Windows
+Thumbs.db
+ehthumbs.db
+ehthumbs_vista.db
+*.lnk
+*.url
+*.ini
+
+# ########## IDEs e Editores ##########
+# VSCode
+.vscode/
+!.vscode/extensions.json
+.history
+
+# JetBrains (WebStorm, etc.)
+.idea/
+
+# ########## Ficheiros de Ambiente ##########
+.env
+.env*.local
+.env.*
+
+# ########## Outros ##########
+# Ficheiros de cache
+.npm
+.eslintcache
+.vite-node-cache
+.pnpm-store
+
+# Cobertura de testes
+coverage

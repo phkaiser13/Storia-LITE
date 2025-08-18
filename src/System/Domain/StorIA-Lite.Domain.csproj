@@ -1,0 +1,30 @@
+<!--
+ * Copyright (C) 2025 Storia-LITE, an open-source software by TruveSoftware
+ * (a division of Vytruve.org)
+ * 
+ * Original Author: Pedro Henrique / phkaiser13
+ * 
+ * Description:
+ *   Project file for the class library. It defines the project's target 
+ *   framework, dependencies, and core build settings. This library likely 
+ *   contains the core domain models, entities, and enumerations for the application.
+ * 
+ * More information: https://vytruve.org
+ *
+ * SPDX-License-Identifier: Apache-2.0
+-->
+
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<!-- Specifies the target framework for the project. This library is built for .NET 8.0. -->
+		<TargetFramework>net8.0</TargetFramework>
+
+		<!-- Enables implicit global using directives, reducing the number of 'using' statements needed in each file. -->
+		<ImplicitUsings>enable</ImplicitUsings>
+
+		<!-- Enables nullable reference types, helping to prevent null reference exceptions at compile time. -->
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+</Project>

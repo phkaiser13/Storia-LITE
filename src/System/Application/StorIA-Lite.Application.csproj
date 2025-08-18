@@ -1,0 +1,54 @@
+<!--
+ * Copyright (C) 2025 Storia-LITE, an open-source software by TruveSoftware
+ * (a division of Vytruve.org)
+ * 
+ * Original Author: Pedro Henrique / phkaiser13
+ * 
+ * Description:
+ *   This is the project file for the Application layer of the StorIA-LITE solution.
+ *   It defines the project's target framework, its dependencies on other projects
+ *   within the solution (like the Domain layer), and all required external NuGet packages.
+ *   These packages provide functionalities for validation, data access, and object mapping.
+ * 
+ * More information: https://vytruve.org
+ *
+ * SPDX-License-Identifier: Apache-2.0
+-->
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<!-- 
+		PropertyGroup defines core project properties.
+	-->
+	<PropertyGroup>
+		<!-- Specifies the target framework for the project. This application targets .NET 8. -->
+		<TargetFramework>net8.0</TargetFramework>
+		<!-- Enables implicit global using directives, reducing boilerplate code in C# files. -->
+		<ImplicitUsings>enable</ImplicitUsings>
+		<!-- Enables nullable reference types to help prevent null reference exceptions. -->
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<!-- 
+		This ItemGroup contains references to other projects within this solution.
+	-->
+	<ItemGroup>
+		<!-- A dependency on the Domain layer project, allowing the Application layer to use its entities and interfaces. -->
+		<ProjectReference Include="..\Domain\StorIA-Lite.Domain.csproj" />
+	</ItemGroup>
+
+	<!-- 
+		This ItemGroup lists all the NuGet package dependencies for the project.
+	-->
+	<ItemGroup>
+		<!-- FluentValidation: A popular library for building strongly-typed validation rules. -->
+		<PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
+		<PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.0" />
+
+		<!-- Entity Framework Core: The primary Object-Relational Mapper (ORM) for data access. -->
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.7" />
+
+		<!-- AutoMapper: A library for object-to-object mapping, typically used to map between DTOs and domain entities. -->
+		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+	</ItemGroup>
+
+</Project>

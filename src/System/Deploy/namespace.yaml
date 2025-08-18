@@ -1,0 +1,26 @@
+#
+# Copyright (C) 2025 Storia-LITE, an open-source software by TruveSoftware
+# (a division of Vytruve.org)
+# 
+# Original Author: Pedro Henrique / phkaiser13
+# 
+# Description:
+#   This manifest defines a dedicated Kubernetes Namespace for all StorIA-LITE
+#   application resources. Using a namespace provides a scope for names,
+#   enabling logical separation and organization of resources within a cluster.
+#   It helps prevent naming conflicts and allows for easier management of
+#   application components (e.g., applying resource quotas or network policies).
+# 
+# More information: https://vytruve.org
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+# Specifies the Kubernetes API version to use for this object. 'v1' is the core API group.
+apiVersion: v1
+# Defines the type of Kubernetes object. In this case, it's a Namespace.
+kind: Namespace
+metadata:
+  # The name of the namespace to be created. All other resources for this application
+  # should be deployed within this 'storia-lite' namespace to ensure isolation and organization.
+  name: storia-lite

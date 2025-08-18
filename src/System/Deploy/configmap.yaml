@@ -1,0 +1,62 @@
+#
+# Copyright (C) 2025 Storia-LITE, an open-source software by TruveSoftware
+# (a division of Vytruve.org)
+# 
+# Original Author: Pedro Henrique / phkaiser13
+# 
+# Description:
+#   This Kubernetes ConfigMap stores non-sensitive configuration settings for the
+#   StorIA-LITE application. It externalizes configuration, allowing parameters
+#   such as database connection details (excluding the password), JWT settings,
+#   and server URLs to be modified without rebuilding the application's Docker image.
+# 
+# More information: https://vytruve.org
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+# This file defines a ConfigMap, which stores non-sensitive configuration data
+# as key-value pairs. Externalizing configuration allows for greater flexibility
+# and manageability, as changes can be applied without rebuilding the container image.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  # The name of the ConfigMap, used to reference it in other Kubernetes objects (e.g., Deployments).
+  name: storia-lite-config
+  # The namespace where this ConfigMap will be created. It's recommended to deploy all application resources in the same namespace.
+  namespace: storia-lite
+data:
+  # --- PostgreSQL Database Configuration ---
+  # The hostname or service name of your PostgreSQL database.
+  # If running inside the same Kubernetes cluster, this would typically be the service name (e.g., "postgres-service").
+  DB_HOST: "your-postgres-host" # IMPORTANT: Replace with your actual database host.
+
+  # The port on which the PostgreSQL database is listening.
+  DB_PORT: "5432" # Default PostgreSQL port. Change if your setup uses a different one.
+
+  # The username for connecting to the database. 
+  # The corresponding password must be stored in a Kubernetes Secret, not here.
+  DB_USER: "your_database_user" # IMPORTANT: Replace with your database username.
+
+  # The name of the database to connect to.
+  DB_NAME: "your_database_name" # IMPORTANT: Replace with your database name.
+
+
+  # --- JWT (JSON Web Token) Non-Sensitive Settings ---
+  # The issuer of the JWT, identifying who created and signed the token.
+  JWT_ISSUER: "StorIA-Lite"
+  
+  # The intended audience of the JWT, specifying the recipients that should accept it.
+  JWT_AUDIENCE: "StorIA-Lite"
+  
+  # The expiration time for the access token, in minutes.
+  JWT_EXPIRY_MINUTES: "60"
+  
+  # The expiration time for the refresh token, in days.
+  JWT_REFRESH_TOKEN_EXPIRY_DAYS: "7"
+
+
+  # --- Kestrel Server URL Configuration ---
+  # Defines the URL and port the ASP.NET Core application (Kestrel) will listen on inside the container.
+  # The "http://+:8080" configuration makes the server listen on port 8080 for all available network interfaces within the Pod.
+  ASPNETCORE_URLS: "http://+:8080"

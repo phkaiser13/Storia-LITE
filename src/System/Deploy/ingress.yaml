@@ -1,0 +1,51 @@
+#
+# Copyright (C) 2025 Storia-LITE, an open-source software by TruveSoftware
+# (a division of Vytruve.org)
+# 
+# Original Author: Pedro Henrique / phkaiser13
+# 
+# Description:
+#   This Kubernetes Ingress manifest manages external access to the services within the
+#   cluster, primarily for HTTP and HTTPS traffic. It defines rules to route requests
+#   from a public-facing domain to the internal 'storia-lite-api-service'. This object
+#   is essential for exposing the application to the internet and is typically managed
+#   by an Ingress Controller (like NGINX, Traefik, or HAProxy).
+# 
+# More information: https://vytruve.org
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  # The name of the Ingress resource.
+  name: storia-lite-ingress
+  # The namespace where this Ingress will be created. Must match the Service it targets.
+  namespace: storia-lite
+  # Annotations are used to configure options for the Ingress Controller.
+  # The available annotations depend on the specific Ingress Controller you are using.
+  annotations:
+    # This example annotation is for the NGINX Ingress Controller.
+    # 'rewrite-target: /' ensures that requests to the backend service are sent to the root path.
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    # A list of host rules. Each rule applies to a specific domain.
+    - host: storia-lite.yourdomain.com # IMPORTANT: Replace this with your actual public domain name.
+      http:
+        # A list of paths for the given host.
+        paths:
+          # This rule matches requests to the specified path.
+          - path: /
+            # 'Prefix' means that any path starting with '/' will be matched.
+            pathType: Prefix
+            # The backend defines where to forward the traffic that matches the rule.
+            backend:
+              service:
+                # The name of the Service to which the traffic should be routed.
+                # This must match the name of the Service defined in '05-service.yaml'.
+                name: storia-lite-api-service
+                port:
+                  # The port number of the Service to target.
+                  number: 80
