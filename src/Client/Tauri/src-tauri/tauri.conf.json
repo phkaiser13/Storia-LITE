@@ -23,35 +23,9 @@
     ],
     "security": {
       "csp": null
-    },
-    "features": {
-      "all": false,
-      "fs": {
-        "all": true,
-        "scope": [
-          "$APPDATA/*",
-          "$DESKTOP/*"
-        ]
-      },
-      "path": {
-        "all": true
-      },
-      "shell": {
-        "open": true
-      },
-      "dialog": {
-        "all": true
-      },
-      "http": {
-        "all": true,
-        "scope": [
-          "http://localhost:5200/*",
-          "https://localhost:7200/*",
-          "https://your-production-api-url.com/api/*"
-        ]
-      }
     }
   },
+  "plugins": {},
   "bundle": {
     "active": true,
     "targets": "all",
