@@ -1,0 +1,62 @@
+name: Build Tauri Client
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Setup Rust
+      uses: dtolnay/rust-toolchain@stable
+
+    - name: Add Windows target
+      if: runner.os == 'Windows'
+      run: rustup target add x86_64-pc-windows-msvc
+
+    - name: Install Tauri CLI
+      run: npm install -g @tauri-apps/cli
+
+    - name: Install frontend dependencies
+      run: npm install
+      working-directory: ./src/Client/Tauri
+
+    - name: Build Tauri application
+      run: npm run tauri build
+      working-directory: ./src/Client/Tauri
+
+    - name: Upload Windows Artifact
+      if: runner.os == 'Windows'
+      uses: actions/upload-artifact@v4
+      with:
+        name: tauri-build-windows
+        path: src/Client/Tauri/src-tauri/target/release/bundle/msi/*.msi
+
+    - name: Upload macOS Artifact
+      if: runner.os == 'macOS'
+      uses: actions/upload-artifact@v4
+      with:
+        name: tauri-build-macos
+        path: src/Client/Tauri/src-tauri/target/release/bundle/dmg/*.dmg
+
+    - name: Upload Linux Artifact
+      if: runner.os == 'Linux'
+      uses: actions/upload-artifact@v4
+      with:
+        name: tauri-build-linux
+        path: |
+          src/Client/Tauri/src-tauri/target/release/bundle/appimage/*.AppImage
+          src/Client/Tauri/src-tauri/target/release/bundle/deb/*.deb
