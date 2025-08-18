@@ -53,7 +53,7 @@ jobs:
         if: matrix.platform == 'ubuntu-latest'
         run: |
           sudo apt-get update
-          sudo apt-get install -y libwebkitgtk-6.0-dev libayatana-appindicator3-dev librsvg2-dev patchelf libjavascriptcoregtk-4.1-dev
+          sudo apt-get install -y libwebkitgtk-6.0-dev libayatana-appindicator3-dev librsvg2-dev patchelf libjavascriptcoregtk-4.1-dev libwebkit2gtk-4.1-dev
       
       - name: Install frontend dependencies
         run: npm install
