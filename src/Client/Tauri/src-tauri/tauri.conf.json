@@ -4,10 +4,10 @@
   "version": "0.1.0",
   "identifier": "com.truvesoftware.storia-lite",
   "build": {
-    "frontendDist": "../../WebClient/dist",
+    "frontendDist": "../../../WebClient/dist",
     "devUrl": "http://localhost:5173",
-    "beforeDevCommand": "npm --prefix ../../WebClient run dev",
-    "beforeBuildCommand": "npm --prefix ../../WebClient run build"
+    "beforeDevCommand": "npm --prefix ../../../WebClient run dev",
+    "beforeBuildCommand": "npm --prefix ../../../WebClient run build"
   },
   "app": {
     "windows": [
