@@ -1,15 +1,31 @@
-# StorIA-LITE: Open Source Inventory Management System
+<h1 align="center">StorIA-LITE: Open Source Inventory Management System</h1>
 
-![StorIA-LITE Logo](https://raw.githubusercontent.com/Vytruve/storia-lite/main/assets/banner-storia-lite-dark.png)
+<div align="center">
+    <img src=".github/assets/storiaicon.svg" alt="StorIA-LITE Logo" width="150" />
+</div>
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/Vytruve/storia-lite/dotnet.yml?style=for-the-badge)](https://github.com/Vytruve/storia-lite/actions)
-[![License](https://img.shields.io/github/license/Vytruve/storia-lite?style=for-the-badge)](LICENSE)
-[![GitHub stars](https://img.shields.io/github/stars/Vytruve/storia-lite?style=for-the-badge)](https://github.com/Vytruve/storia-lite/stargazers)
-[![GitHub issues](https://img.shields.io/github/issues/Vytruve/storia-lite?style=for-the-badge)](https://github.com/Vytruve/storia-lite/issues)
+<div align="center" style="margin-top: 10px;">
+    <a href="https://github.com/Vytruve/storia-lite/actions">
+        <img src="https://img.shields.io/github/actions/workflow/status/Vytruve/storia-lite/dotnet.yml?style=for-the-badge" alt="Build Status" />
+    </a>
+    <a href="LICENSE">
+        <img src="https://img.shields.io/github/license/Vytruve/storia-lite?style=for-the-badge" alt="License" />
+    </a>
+    <a href="https://github.com/Vytruve/storia-lite/stargazers">
+        <img src="https://img.shields.io/github/stars/Vytruve/storia-lite?style=for-the-badge" alt="GitHub stars" />
+    </a>
+    <a href="https://github.com/Vytruve/storia-lite/issues">
+        <img src="https://img.shields.io/github/issues/Vytruve/storia-lite?style=for-the-badge" alt="GitHub issues" />
+    </a>
+</div>
 
-**StorIA-LITE** is a powerful, flexible, and open-source inventory management system designed to bring efficiency and clarity to your stock control processes. Built with a modern technology stack and a clean, decoupled architecture, StorIA-LITE is ideal for small to medium-sized businesses, warehouses, and individuals who need a reliable way to track items, manage movements, and generate insightful reports.
+<p align="center">
+    <strong>StorIA-LITE</strong> is a powerful, flexible, and open-source inventory management system designed to bring efficiency and clarity to your stock control processes. Built with a modern technology stack and a clean, decoupled architecture, StorIA-LITE is ideal for small to medium-sized businesses, warehouses, and individuals who need a reliable way to track items, manage movements, and generate insightful reports.
+</p>
 
-This project is the "LITE" version of the more comprehensive StorIA ERP/CRM system, offering core inventory functionalities in a lightweight and accessible package.
+<p align="center">
+    This project is the "LITE" version of the more comprehensive StorIA ERP/CRM system, offering core inventory functionalities in a lightweight and accessible package.
+</p>
 
 ---
 
