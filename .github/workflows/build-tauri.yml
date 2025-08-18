@@ -13,8 +13,7 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+    - uses: actions/checkout@v4
 
     - name: Setup Node.js
       uses: actions/setup-node@v4
@@ -24,20 +23,20 @@ jobs:
     - name: Setup Rust
       uses: dtolnay/rust-toolchain@stable
 
-    - name: Add Windows target for cross-compilation
+    - name: Add Windows target
       if: runner.os == 'Windows'
       run: rustup target add x86_64-pc-windows-msvc
 
-    - name: Install Tauri CLI globally
+    - name: Install Tauri CLI
       run: npm install -g @tauri-apps/cli
 
-    # A mágica acontece aqui!
-    # O comando 'tauri build' vai ler o 'tauri.conf.json',
-    # e executar o 'beforeBuildCommand' automaticamente,
-    # que instala as dependências e compila o seu WebClient.
+    - name: Install frontend dependencies
+      run: npm install
+      working-directory: ./src/WebClient # <- CORRETO
+
     - name: Build Tauri application
-      run: tauri build
-      working-directory: ./src/Client/Tauri # Executamos a partir da pasta raiz do projeto Tauri
+      run: tauri build # <- MUDANÇA AQUI
+      working-directory: ./src/Client/Tauri # <- E AQUI
 
     - name: Upload Windows Artifact
       if: runner.os == 'Windows'
