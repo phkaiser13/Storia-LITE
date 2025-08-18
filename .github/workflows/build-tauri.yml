@@ -29,18 +29,17 @@ jobs:
         if: runner.os == 'Windows'
         run: rustup target add x86_64-pc-windows-msvc
 
-      # Passo 1: Instala as dependências do frontend (incluindo a CLI do Tauri)
+      # Passo 1: Instalar as dependências do frontend (incluindo a CLI do Tauri)
       - name: Install dependencies
         working-directory: ./src/WebClient
         run: npm install
 
-      # Passo 2: Construir a aplicação Tauri (COMANDO CORRIGIDO)
-      # Invocamos a CLI do Tauri diretamente, passando o caminho para o projeto
+      # Passo 2: Construir a aplicação Tauri com a flag de configuração correta
       - name: Build Tauri application
         working-directory: ./src/WebClient
-        run: npx tauri build --project ../Client/Tauri
+        run: npx tauri build -c ../Client/Tauri/src-tauri/tauri.conf.json
 
-      # Passo 3: Upload dos Artefatos (sem alterações)
+      # Passo 3: Upload dos Artefatos
       - name: Upload Windows Artifact
         if: runner.os == 'Windows'
         uses: actions/upload-artifact@v4

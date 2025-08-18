@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "identifier": "com.your-domain.storia-lite",
   "build": {
-    "beforeBuildCommand": "npm run build",
+    "beforeBuildCommand": "cd ../../../WebClient && npm run build",
     "beforeDevCommand": "cd ../../../WebClient && npm install && npm run dev",
     "devUrl": "http://localhost:5173",
     "frontendDist": "../../../WebClient/dist"
