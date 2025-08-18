@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [macos-latest, ubuntu-latest, windows-latest]
+        platform: [macos-latest, ubuntu-22.04, windows-latest]
 
     runs-on: ${{ matrix.platform }}
     steps:
@@ -28,18 +28,35 @@ jobs:
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@stable
 
-      - name: Install dependencies (ubuntu only)
-        if: matrix.platform == 'ubuntu-latest'
+      - name: Install dependencies (Ubuntu only)
+        if: matrix.platform == 'ubuntu-22.04'
         run: |
           sudo apt-get update
-          sudo apt-get install -y libwebkitgtk-6.0-dev libayatana-appindicator3-dev librsvg2-dev patchelf libjavascriptcoregtk-4.1-dev
+          sudo apt-get install -y --no-install-recommends \
+            build-essential \
+            pkg-config \
+            libglib2.0-dev \
+            libgirepository1.0-dev \
+            gir1.2-webkit2-4.0 \
+            libwebkit2gtk-4.0-dev \
+            libjavascriptcoregtk-4.0-dev \
+            libgtk-3-dev \
+            libssl-dev \
+            libayatana-appindicator3-dev \
+            librsvg2-dev
 
+          # Garante que pkg-config encontre os .pc files
+          export PKG_CONFIG_PATH=${PKG_CONFIG_PATH:-/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/lib/pkgconfig}
+          echo "PKG_CONFIG_PATH=$PKG_CONFIG_PATH"
+
+          # Debug rápido para verificar se WebKitGTK está disponível
+          pkg-config --modversion webkit2gtk-4.0 || true
+          pkg-config --modversion webkit2gtk-4.1 || true
 
       - name: Install frontend dependencies
         run: npm install
         working-directory: ./src/WebClient
 
-      # PASSO ADICIONADO: Construir o frontend
       - name: Build frontend
         run: npm run build
         working-directory: ./src/WebClient
