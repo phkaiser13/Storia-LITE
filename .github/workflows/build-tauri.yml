@@ -32,11 +32,11 @@ jobs:
 
     - name: Install frontend dependencies
       run: npm install
-      working-directory: ./src/Client/Tauri
+      working-directory: ./src/WebClient
 
     - name: Build Tauri application
       run: npm run tauri build
-      working-directory: ./src/Client/Tauri
+      working-directory: ./src/WebClient
 
     - name: Upload Windows Artifact
       if: runner.os == 'Windows'
