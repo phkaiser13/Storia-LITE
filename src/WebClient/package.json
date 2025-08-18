@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "tauri": "tauri --config ../Client/Tauri/src-tauri/tauri.conf.json"
+    "tauri": "tauri"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.83.0",
