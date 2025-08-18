@@ -1,70 +1,60 @@
-name: Build Tauri Client
-
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-
-jobs:
-  build:
+build-tauri:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
-
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+        
+      - name: Add Windows target for Rust
+        if: runner.os == 'Windows'
+        run: rustup target add x86_64-pc-windows-msvc
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
+      # Passo 1: Instalar dependências do frontend (no diretório correto)
+      - name: Install frontend dependencies
+        run: npm install
+        working-directory: ./src/WebClient # CORREÇÃO: Apontando para a pasta do WebClient
 
-    - name: Setup Rust (stable)
-      uses: dtolnay/rust-toolchain@stable
+      # Passo 2: Instalar o Tauri CLI globalmente no runner
+      - name: Install Tauri CLI
+        run: npm install -g @tauri-apps/cli
 
-    - name: Add Windows target for Rust
-      if: runner.os == 'Windows'
-      run: rustup target add x86_64-pc-windows-msvc
+      # Passo 3: Build da aplicação Tauri
+      # Executa o comando `tauri build` diretamente, sem `npm run`,
+      # a partir do diretório correto para evitar o erro de package.json.
+      - name: Build Tauri application
+        run: tauri build
+        working-directory: ./src/Client/Tauri # CORREÇÃO: O comando `tauri` é executado aqui
 
-    # Passo 1: Instalar dependências do frontend e o Tauri CLI
-    - name: Install frontend dependencies and Tauri CLI
-      working-directory: ./src/WebClient
-      run: npm install
-
-    # Passo 2: O build do frontend será feito pelo comando do Tauri
-    # O passo de build do frontend foi removido daqui porque o seu
-    # arquivo tauri.conf.json já executa o build através do "beforeBuildCommand".
-    # Isso evita a redundância e possíveis conflitos.
-
-    # Passo 3: Build da aplicação Tauri
-    # O diretório de trabalho foi ajustado para a raiz do projeto Tauri
-    - name: Build Tauri application
-      working-directory: ./src/Client/Tauri
-      run: npm run tauri build
-
-    # Passo 4: Upload dos Artefatos (caminhos corrigidos)
-    - name: Upload Windows Artifact
-      if: runner.os == 'Windows'
-      uses: actions/upload-artifact@v4
-      with:
-        name: tauri-build-windows
-        path: src/Client/Tauri/src-tauri/target/release/bundle/msi/*.msi
-
-    - name: Upload macOS Artifact
-      if: runner.os == 'macOS'
-      uses: actions/upload-artifact@v4
-      with:
-        name: tauri-build-macos
-        path: src/Client/Tauri/src-tauri/target/release/bundle/dmg/*.dmg
-
-    - name: Upload Linux Artifact
-      if: runner.os == 'Linux'
-      uses: actions/upload-artifact@v4
-      with:
-        name: tauri-build-linux
-        path: |
-          src/Client/Tauri/src-tauri/target/release/bundle/appimage/*.AppImage
-          src/Client/Tauri/src-tauri/target/release/bundle/deb/*.deb
+      # Passo 4: Upload dos Artefatos (caminhos já estavam corretos)
+      - name: Upload Windows Artifact
+        if: runner.os == 'Windows'
+        uses: actions/upload-artifact@v4
+        with:
+          name: tauri-build-windows
+          path: src/Client/Tauri/src-tauri/target/release/bundle/msi/*.msi
+          
+      - name: Upload macOS Artifact
+        if: runner.os == 'macOS'
+        uses: actions/upload-artifact@v4
+        with:
+          name: tauri-build-macos
+          path: src/Client/Tauri/src-tauri/target/release/bundle/dmg/*.dmg
+          
+      - name: Upload Linux Artifact
+        if: runner.os == 'Linux'
+        uses: actions/upload-artifact@v4
+        with:
+          name: tauri-build-linux
+          path: |
+            src/Client/Tauri/src-tauri/target/release/bundle/appimage/*.AppImage
+            src/Client/Tauri/src-tauri/target/release/bundle/deb/*.deb
