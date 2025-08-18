@@ -9,7 +9,6 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-    
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -30,7 +29,7 @@ jobs:
     - name: Install Tauri CLI (global)
       run: npm install -g @tauri-apps/cli
 
-    # 1) Frontend: instala deps e build da web app (onde está seu package.json do frontend)
+    # Frontend: instala deps e build da web app
     - name: Install frontend dependencies
       working-directory: ./src/WebClient
       run: npm ci
@@ -39,22 +38,32 @@ jobs:
       working-directory: ./src/WebClient
       run: npm run build
 
-    # 2) Tauri project deps (se você usar node deps no projeto tauri)
+    # Opcional: instala deps do projeto Tauri se existir package.json
     - name: Install Tauri project dependencies (if any)
-      working-directory: ./src/client/tauri
+      # Força uso de bash para que os ifs funcionem igual em macOS/Linux/Windows (Windows tem Git Bash)
+      shell: bash
       run: |
-        if [ -f package.json ]; then npm ci; fi
+        if [ -f ./src/client/tauri/package.json ]; then
+          echo "Found package.json in ./src/client/tauri -> running npm ci"
+          (cd ./src/client/tauri && npm ci)
+        elif [ -f ./src/client/tauri/src-tauri/package.json ]; then
+          echo "Found package.json in ./src/client/tauri/src-tauri -> running npm ci"
+          (cd ./src/client/tauri/src-tauri && npm ci)
+        else
+          echo "No package.json found under ./src/client/tauri or ./src/client/tauri/src-tauri - skipping npm ci"
+        fi
 
-    # 3) Build Tauri (rodando na pasta src-tauri onde está tauri.conf.json)
+    # Build Tauri: rode dentro da pasta src-tauri onde está tauri.conf.json
     - name: Build Tauri application
+      shell: bash
       working-directory: ./src/client/tauri/src-tauri
       run: |
-        # show current dir for debug (opcional)
-        pwd
+        echo "== CI debug: current directory = $(pwd) =="
         ls -la
+        # tauri build executa o beforeBuildCommand do tauri.conf.json
         tauri build
 
-    # Upload artifacts (paths case-sensitive)
+    # Upload artifacts
     - name: Upload Windows Artifact
       if: runner.os == 'Windows'
       uses: actions/upload-artifact@v4
