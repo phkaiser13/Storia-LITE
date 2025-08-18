@@ -1,65 +1,49 @@
-# .github/workflows/release-tauri.yml
-
-name: 'Release Tauri Desktop App'
+name: 'Tauri Build CI'
 
 on:
-  # Dispara o workflow quando uma tag no formato v*.*.* (ex: v1.0.0) é criada
   push:
-    tags:
-      - 'v*.*.*'
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  build-tauri:
-    # Estratégia para construir em paralelo para as 3 principais plataformas
+  build:
     strategy:
       fail-fast: false
       matrix:
-        platform: [macos-latest, ubuntu-20.04, windows-latest]
+        platform: [macos-latest, ubuntu-latest, windows-latest]
 
     runs-on: ${{ matrix.platform }}
     steps:
-      # 1. Baixa o código do seu repositório
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2. Configura o ambiente Node.js para instalar dependências
-      - name: Setup Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: '20' # Define a versão do Node.js
 
-      # 3. Instala a toolchain do Rust
-      - name: Install Rust stable
+      - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@stable
 
-      # 4. Instala as dependências do sistema necessárias para o build no Linux (Ubuntu)
-      - name: Install dependencies (ubuntu only)
-        if: matrix.platform == 'ubuntu-20.04'
+      - name: Install frontend dependencies
+        # Roda o npm install dentro da pasta do seu projeto web
+        run: npm install
+        working-directory: ./src/WebClient
+
+      - name: Install dependencies for Linux (Ubuntu)
+        if: matrix.platform == 'ubuntu-latest'
         run: |
           sudo apt-get update
           sudo apt-get install -y libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev patchelf
 
-      # 5. Instala as dependências da sua aplicação web (React)
-      - name: Install frontend dependencies
-        run: npm install
-        working-directory: ./src/WebClient
-
-      # 6. Utiliza a "tauri-action" para orquestrar o build e o release
-      - name: Build and release Tauri app
+      - name: Build Tauri application
+        # Usa a action oficial do Tauri que cuida de todo o processo de build
         uses: tauri-apps/tauri-action@v0
         env:
-          # O GITHUB_TOKEN é necessário para criar a release no seu repositório
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          # Caminho para o diretório do projeto Tauri
-          projectPath: ./src/Client/Tauri
-          # Nome da tag para a release (pega a tag que disparou o workflow)
-          tagName: ${{ github.ref_name }}
-          # Nome da release (a action substitui __VERSION__ pela versão do app)
-          releaseName: 'Storia Lite Desktop v__VERSION__'
-          # Corpo da release
-          releaseBody: 'Veja os assets abaixo para baixar a versão apropriada para a sua plataforma.'
-          # Cria a release como um rascunho para você revisar antes de publicar
-          releaseDraft: true
-          # Define se é uma pré-release
-          prerelease: false
+          # Aponta para a pasta do projeto Tauri
+          projectPath: './src/Client/Tauri'
