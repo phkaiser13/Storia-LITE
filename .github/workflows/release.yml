@@ -9,7 +9,7 @@ on:
 
 jobs:
   build-dotnet:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Setup .NET
@@ -34,7 +34,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [macos-latest, windows-latest]
+        platform: [macos-latest, windows-latest]  # Ubuntu removido
 
     runs-on: ${{ matrix.platform }}
     steps:
@@ -66,7 +66,7 @@ jobs:
 
   create-release:
     needs: [build-dotnet, build-tauri]
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
