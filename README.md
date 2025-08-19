@@ -238,6 +238,6 @@ This project is licensed under the Apache-2.0 License - see the [LICENSE](LICENS
 
 -   **Project Lead**: Pedro Henrique ([phkaiser13](https://github.com/phkaiser13))
 -   **Organization**: [Vytruve.org](https://vytruve.org)
--   **GitHub Issues**: [https://github.com/Vytruve/storia-lite/issues](https://github.com/Vytruve/storia-lite/issues)
+-   **GitHub Issues**: [https://github.com/Vytruve/storia-lite/issues](https://github.com/phkaiser13/storia-lite/issues)
 
 If you have any questions, feedback, or need support, please open an issue on GitHub.
