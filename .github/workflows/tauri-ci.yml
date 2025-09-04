@@ -16,13 +16,13 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - platform: 'macos-latest'
+          - platform: 'macos-13'   # Monterey (Apple Silicon)
             args: '--target aarch64-apple-darwin'
-          - platform: 'macos-latest' 
+          - platform: 'macos-13'   # Monterey (Intel)
             args: '--target x86_64-apple-darwin'
-          - platform: 'windows-latest'
+          - platform: 'windows-2022'
             args: '--target x86_64-pc-windows-msvc'
-          - platform: 'windows-latest'
+          - platform: 'windows-2022'
             args: '--target i686-pc-windows-msvc'
 
     runs-on: ${{ matrix.platform }}
