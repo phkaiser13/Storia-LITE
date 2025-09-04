@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - main
-    tags:
-      - 'v*'
   pull_request:
     branches:
       - main
@@ -15,15 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - platform: 'macos-latest'
-            args: '--target aarch64-apple-darwin'
-          - platform: 'macos-latest' 
-            args: '--target x86_64-apple-darwin'
-          - platform: 'windows-latest'
-            args: '--target x86_64-pc-windows-msvc'
-          - platform: 'windows-latest'
-            args: '--target i686-pc-windows-msvc'
+        platform: [macos-latest, windows-latest]
 
     runs-on: ${{ matrix.platform }}
     steps:
@@ -37,8 +27,6 @@ jobs:
 
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@stable
-        with:
-          targets: aarch64-apple-darwin,x86_64-apple-darwin,x86_64-pc-windows-msvc,i686-pc-windows-msvc
 
       - name: Install frontend dependencies
         run: npm install
@@ -48,63 +36,9 @@ jobs:
         run: npm run build
         working-directory: ./WebClient
 
-      - name: Build Tauri application (Development)
-        if: startsWith(github.ref, 'refs/heads/')
+      - name: Build Tauri application
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          projectPath: './Client/Tauri'
-          args: ${{ matrix.args }}
-
-      - name: Build Tauri application (Release)
-        if: startsWith(github.ref, 'refs/tags/')
-        uses: tauri-apps/tauri-action@v0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          projectPath: './Client/Tauri'
-          args: ${{ matrix.args }}
-          releaseId: ${{ needs.create-release.outputs.release-id }}
-
-  create-release:
-    if: startsWith(github.ref, 'refs/tags/')
-    runs-on: ubuntu-latest
-    outputs:
-      release-id: ${{ steps.create-release.outputs.result }}
-
-    steps:
-      - uses: actions/checkout@v4
-      
-      - name: Create Release
-        id: create-release
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const { data } = await github.rest.repos.createRelease({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              tag_name: `${context.ref.replace('refs/tags/', '')}`,
-              name: `Storia Lite ${context.ref.replace('refs/tags/', '')}`,
-              body: 'Automated release for Storia Lite desktop application',
-              draft: true,
-              prerelease: false
-            })
-            return data.id
-
-  publish-release:
-    if: startsWith(github.ref, 'refs/tags/')
-    needs: [create-release, build]
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: Publish Release
-        uses: actions/github-script@v6
-        with:
-          script: |
-            github.rest.repos.updateRelease({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              release_id: '${{ needs.create-release.outputs.release-id }}',
-              draft: false
-            })
+          projectPath: '.Client/Tauri'

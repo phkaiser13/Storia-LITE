@@ -6,7 +6,7 @@ on:
       - 'v*'
 
 jobs:
-  build-tauri:
+  build-and-release:
     strategy:
       fail-fast: false
       matrix:
@@ -47,7 +47,7 @@ jobs:
         run: npm run build
         working-directory: ./src/WebClient
 
-      - name: Build Tauri application
+      - name: Build and Release Tauri application
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -57,14 +57,24 @@ jobs:
           tagName: ${{ github.ref_name }}
           releaseName: 'Storia Lite ${{ github.ref_name }}'
           releaseBody: |
-            Automated release for Storia Lite desktop application.
+            ## Storia Lite ${{ github.ref_name }}
             
-            ## Supported Platforms
-            - Windows (32-bit and 64-bit)
-            - macOS (Intel and Apple Silicon)
+            Automated release para a aplicação desktop Storia Lite.
             
-            ## Installation
-            - **Windows**: Download and run the `.exe` installer
-            - **macOS**: Download and open the `.dmg` file
+            ### Plataformas Suportadas
+            - **Windows 64-bit**: `*.exe` (x64)
+            - **Windows 32-bit**: `*.exe` (x86)
+            - **macOS Intel**: `*.dmg` (x64)
+            - **macOS Apple Silicon**: `*.dmg` (ARM64)
+            
+            ### Como Instalar
+            1. Baixe o arquivo correspondente à sua plataforma
+            2. **Windows**: Execute o arquivo `.exe`
+            3. **macOS**: Abra o arquivo `.dmg` e arraste para Applications
+            
+            ### Changelog
+            - Funcionalidades e correções incluídas nesta versão
           releaseDraft: false
           prerelease: false
+          includeDebug: false
+          includeRelease: true
