@@ -6,7 +6,7 @@
 
 <p align="center">
   <a href="https://github.com/phkaiser13/Storia-LITE/actions">
-    <img src="https://img.shields.io/github/actions/workflow/status/phkaiser13/Storia-LITE/dotnet.yml?style=for-the-badge" alt="Build Status" />
+    <img src="https://img.shields.io/github/actions/workflow/status/phkaiser13/Storia-LITE/dotnet-ci.yml?style=for-the-badge" alt="Build Status" />
   </a>
   <a href="LICENSE">
     <img src="https://img.shields.io/github/license/phkaiser13/Storia-LITE?style=for-the-badge" alt="License" />
