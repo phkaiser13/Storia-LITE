@@ -57,4 +57,24 @@ jobs:
           projectPath: './Client/Tauri'
           args: ${{ matrix.args }}
 
+      # ---------- ADICIONEI ESTES STEPS PARA GERAR/UPLOADER ARTIFACTS ----------
+      - name: Find Tauri build artifacts (debug)
+        run: |
+          echo "Procurando artefatos Tauri em ./Client/Tauri..."
+          find ./Client/Tauri -type f -path "*/target/release/bundle/*" -print || true
+          find ./Client/Tauri -type f -path "*/target/*/release/bundle/*" -print || true
+          find ./Client/Tauri -type f -name "*.exe" -o -name "*.msi" -o -name "*.dmg" -o -name "*.zip" -o -name "*.app" || true
 
+      - name: Upload Tauri build artifacts
+        if: success()  # só sobe se o job tiver sucesso
+        uses: actions/upload-artifact@v4
+        with:
+          name: tauri-artifacts-${{ matrix.platform }}
+          path: |
+            ./Client/Tauri/target/release/bundle/**
+            ./Client/Tauri/src-tauri/target/release/bundle/**
+            ./Client/Tauri/target/**/release/bundle/**
+            ./Client/Tauri/**/target/**/bundle/**
+            ./Client/Tauri/**/.cargo/**/target/**/bundle/**
+
+      # -----------------------------------------------------------------------
