@@ -41,7 +41,7 @@ jobs:
 
       - name: Install frontend dependencies
         run: npm install
-        working-directory: /WebClient
+        working-directory: ./WebClient
 
       - name: Build frontend
         run: npm run build
