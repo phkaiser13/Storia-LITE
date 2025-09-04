@@ -41,18 +41,18 @@ jobs:
 
       - name: Install frontend dependencies
         run: npm install
-        working-directory: ./src/WebClient
+        working-directory: /WebClient
 
       - name: Build frontend
         run: npm run build
-        working-directory: ./src/WebClient
+        working-directory: ./WebClient
 
       - name: Build and Release Tauri application
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          projectPath: './src/Client/Tauri'
+          projectPath: ./Client/Tauri'
           args: ${{ matrix.args }}
           tagName: ${{ github.ref_name }}
           releaseName: 'Storia Lite ${{ github.ref_name }}'
