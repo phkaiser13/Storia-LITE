@@ -6,6 +6,17 @@ on:
   pull_request:
     branches: [ "main" ]
 
+# Permissões necessárias para o GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Permite apenas um deployment concorrente
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -18,10 +29,41 @@ jobs:
       with:
         node-version: '20'
 
+    - name: Setup Pages
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      uses: actions/configure-pages@v4
+
     - name: Install dependencies
       run: npm install
       working-directory: ./src/WebClient
 
-    - name: Build
+    - name: Build for development
+      if: github.event_name == 'pull_request'
       run: npm run build
       working-directory: ./src/WebClient
+
+    - name: Build for production (GitHub Pages)
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      run: npm run build
+      working-directory: ./src/WebClient
+      env:
+        NODE_ENV: production
+
+    - name: Upload artifact for GitHub Pages
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: './src/WebClient/dist'
+
+  deploy:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
