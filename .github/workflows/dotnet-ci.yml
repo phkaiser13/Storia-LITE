@@ -19,10 +19,10 @@ jobs:
         dotnet-version: 8.0.x
 
     - name: Restore dependencies
-      run: dotnet restore src/System/StoriaSystem.sln
+      run: dotnet restore src/StoriaSystem.sln
 
     - name: Build
-      run: dotnet build src/System/StoriaSystem.sln --no-restore
+      run: dotnet build src/StoriaSystem.sln --no-restore
 
     - name: Test
-      run: dotnet test src/System/StoriaSystem.sln --no-build --verbosity normal
+      run: dotnet test src/StoriaSystem.sln --no-build --verbosity normal
