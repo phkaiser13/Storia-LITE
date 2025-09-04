@@ -42,11 +42,11 @@ jobs:
 
       - name: Install frontend dependencies
         run: npm install
-        working-directory: ./src/WebClient
+        working-directory: ./WebClient
 
       - name: Build frontend
         run: npm run build
-        working-directory: ./src/WebClient
+        working-directory: ./WebClient
 
       - name: Build Tauri application (Development)
         if: startsWith(github.ref, 'refs/heads/')
@@ -54,7 +54,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          projectPath: './src/Client/Tauri'
+          projectPath: './Client/Tauri'
           args: ${{ matrix.args }}
 
       - name: Build Tauri application (Release)
@@ -63,7 +63,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          projectPath: './src/Client/Tauri'
+          projectPath: './Client/Tauri'
           args: ${{ matrix.args }}
           releaseId: ${{ needs.create-release.outputs.release-id }}
 
