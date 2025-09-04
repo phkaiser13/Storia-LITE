@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/Resources/AppIcon/appicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>StorIA-Lite</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/src/styles/global.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              heading: ['Sora', 'sans-serif'],
+            },
+            colors: {
+              'dark-bg': '#0A0927',
+              'dark-surface': '#161633',
+              'dark-glass': 'rgba(22, 22, 51, 0.5)',
+              'light-bg': '#F9F9FB',
+              'light-surface': '#FFFFFF',
+              'light-glass': 'rgba(255, 255, 255, 0.5)',
+              primary: {
+                '50': '#f2efff',
+                '100': '#e5deff',
+                '200': '#d1c4ff',
+                '300': '#b69eff',
+                '400': '#9775ff',
+                '500': '#7E57FF',
+                '600': '#6A44FF',
+                '700': '#5A33E8',
+                '800': '#4A29C7',
+                '900': '#3C23A6',
+                '950': '#2A1A7F'
+              },
+              secondary: '#25C8D4',
+              accent: '#F72585',
+              'dark-text': '#E0E0FF',
+              'dark-text-muted': '#A0A0C0',
+              'light-text': '#10102A',
+              'light-text-muted': '#5C5C7A',
+              'dark-border': 'rgba(126, 87, 255, 0.2)',
+              'light-border': 'rgba(22, 22, 51, 0.1)',
+            },
+            boxShadow: {
+              'glow-primary': '0px 0px 20px 0px rgba(126, 87, 255, 0.4), 0px 0px 10px 0px rgba(126, 87, 255, 0.2)',
+              'glow-secondary': '0px 0px 20px 0px rgba(37, 200, 212, 0.4)',
+              'card': '0px 10px 30px -10px rgba(0, 0, 0, 0.2)',
+              'card-hover': '0px 20px 40px -15px rgba(0, 0, 0, 0.3)',
+            },
+            backgroundImage: {
+              'gradient-primary': 'linear-gradient(90deg, #7E57FF 0%, #F72585 100%)',
+              'gradient-surface-dark': 'radial-gradient(ellipse at top left, rgba(126, 87, 255, 0.1) 0%, rgba(22, 22, 51, 0) 50%)',
+              'auth-gradient': 'radial-gradient(ellipse 80% 50% at 50% -20%,rgba(120,119,198,0.3), transparent)',
+            },
+            keyframes: {
+              'fade-in-up': {
+                '0%': { opacity: '0', transform: 'translateY(10px) scale(0.98)' },
+                '100%': { opacity: '1', transform: 'translateY(0) scale(1)' },
+              },
+              'modal-enter': {
+                '0%': { transform: 'translateY(1rem) scale(.98)', opacity: '0' },
+                '100%': { transform: 'translateY(0) scale(1)', opacity: '1' },
+              },
+              'fade-in': {
+                '0%': { opacity: '0' },
+                '100%': { opacity: '1' },
+              },
+              'background-pan': {
+                '0%': { 'background-position': '0% 50%' },
+                '50%': { 'background-position': '100% 50%' },
+                '100%': { 'background-position': '0% 50%' }
+              }
+            },
+            animation: {
+              'fade-in-up': 'fade-in-up 0.5s ease-out forwards',
+              'modal-enter': 'modal-enter 0.3s ease-out forwards',
+              'fade-in': 'fade-in 0.2s ease-out forwards',
+              'background-pan': 'background-pan 15s ease infinite'
+            },
+          }
+        }
+      }
+       // On page load or when changing themes, best to add inline in `head` to avoid FOUC
+      if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark')
+      } else {
+        document.documentElement.classList.remove('dark')
+      }
+    </script>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.1.0",
+    "react-dom": "https://esm.sh/react-dom@^19.1.0",
+    "react-dom/client": "https://esm.sh/react-dom@^19.1.0/client",
+    "react/": "https://esm.sh/react@^19.1.0/",
+    "axios": "https://esm.sh/axios@^1.11.0",
+    "react-router-dom": "https://esm.sh/react-router-dom@^7.7.1",
+    "react-hook-form": "https://esm.sh/react-hook-form@^7.61.1",
+    "@tanstack/react-query": "https://esm.sh/@tanstack/react-query@^5.83.0",
+    "react-icons/": "https://esm.sh/react-icons@5.2.1/",
+    "html5-qrcode": "https://esm.sh/html5-qrcode@2.3.8",
+    "papaparse": "https://esm.sh/papaparse@5.4.1",
+    "vite": "https://aistudiocdn.com/vite@^7.1.4",
+    "path": "https://aistudiocdn.com/path@^0.12.7",
+    "url": "https://aistudiocdn.com/url@^0.11.4",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.1.1/",
+    "chart.js": "https://esm.sh/chart.js@^4.4.3",
+    "react-chartjs-2": "https://esm.sh/react-chartjs-2@^5.2.0"
+  }
+}
+</script>
+
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body class="bg-light-bg dark:bg-dark-bg font-sans antialiased">
+    <div id="root"></div>
+    <div id="modal-root"></div>
+    <script type="module" src="/src/index.tsx"></script>
+<script type="module" src="/index.tsx"></script>
+</body>
+</html>

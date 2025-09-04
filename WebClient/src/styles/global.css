@@ -1,0 +1,50 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-light-bg dark:bg-dark-bg text-light-text dark:text-dark-text;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Custom Scrollbar for a more modern look */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(126, 87, 255, 0.3);
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: rgba(126, 87, 255, 0.5);
+}
+::-webkit-scrollbar-thumb {
+  background: #d1c4ff;
+  border-radius: 10px;
+   border: 2px solid transparent;
+  background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #b69eff;
+}
+
+
+/* Custom background for auth pages */
+.auth-background {
+  background-color: #0A0927;
+  background-image:
+    radial-gradient(at 27% 37%, hsla(252, 100%, 67%, 0.1) 0px, transparent 50%),
+    radial-gradient(at 97% 21%, hsla(185, 75%, 55%, 0.1) 0px, transparent 50%),
+    radial-gradient(at 82% 99%, hsla(333, 93%, 54%, 0.1) 0px, transparent 50%);
+}
