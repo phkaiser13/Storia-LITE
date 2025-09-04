@@ -5,37 +5,8 @@ on:
     tags:
       - 'v*'
 
-permissions:
-  contents: write
-
 jobs:
-  create-release:
-    runs-on: ubuntu-latest
-    outputs:
-      release-id: ${{ steps.create-release.outputs.result }}
-      upload-url: ${{ steps.create-release.outputs.upload_url }}
-
-    steps:
-      - uses: actions/checkout@v4
-      
-      - name: Create Release
-        id: create-release
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const { data } = await github.rest.repos.createRelease({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              tag_name: `${context.ref.replace('refs/tags/', '')}`,
-              name: `Storia Lite ${context.ref.replace('refs/tags/', '')}`,
-              body: 'Automated release for Storia Lite desktop application',
-              draft: true,
-              prerelease: false
-            })
-            return data.id
-
   build-tauri:
-    needs: create-release
     strategy:
       fail-fast: false
       matrix:
@@ -70,33 +41,30 @@ jobs:
 
       - name: Install frontend dependencies
         run: npm install
-        working-directory: ./WebClient
+        working-directory: ./src/WebClient
 
       - name: Build frontend
         run: npm run build
-        working-directory: ./WebClient
+        working-directory: ./src/WebClient
 
       - name: Build Tauri application
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          projectPath: './Client/Tauri'
+          projectPath: './src/Client/Tauri'
           args: ${{ matrix.args }}
-          releaseId: ${{ needs.create-release.outputs.release-id }}
-
-  publish-release:
-    needs: [create-release, build-tauri]
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: Publish Release
-        uses: actions/github-script@v6
-        with:
-          script: |
-            github.rest.repos.updateRelease({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              release_id: '${{ needs.create-release.outputs.release-id }}',
-              draft: false
-            })
+          tagName: ${{ github.ref_name }}
+          releaseName: 'Storia Lite ${{ github.ref_name }}'
+          releaseBody: |
+            Automated release for Storia Lite desktop application.
+            
+            ## Supported Platforms
+            - Windows (32-bit and 64-bit)
+            - macOS (Intel and Apple Silicon)
+            
+            ## Installation
+            - **Windows**: Download and run the `.exe` installer
+            - **macOS**: Download and open the `.dmg` file
+          releaseDraft: false
+          prerelease: false
