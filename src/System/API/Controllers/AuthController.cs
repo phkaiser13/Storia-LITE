@@ -16,9 +16,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StorIA.Core.Application.DTOs;
 using StorIA.Core.Application.Interfaces;
+using System.Security.Claims;
 
 namespace StorIA.API.Controllers
 {
@@ -89,6 +91,40 @@ namespace StorIA.API.Controllers
 
             // Return the new set of tokens.
             return Ok(authResult);
+        }
+
+        /// <summary>
+        /// Allows an authenticated user to change their own password.
+        /// </summary>
+        /// <param name="request">The DTO containing the current and new passwords.</param>
+        /// <returns>A 200 OK on success, or 400 Bad Request if the password change fails.</returns>
+        [HttpPost("change-password")]
+        [Authorize] // This endpoint requires the user to be authenticated.
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequestDto request)
+        {
+            // Find the user's ID from the claims principal.
+            // The "NameIdentifier" claim is commonly used to store the user's unique ID.
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdClaim == null || !Guid.TryParse(userIdClaim.Value, out var userId))
+            {
+                // This case should be rare if the JWT is correctly issued.
+                return Unauthorized();
+            }
+
+            // Call the service to perform the password change logic.
+            var success = await _authService.ChangePasswordAsync(userId, request.CurrentPassword, request.NewPassword);
+
+            if (!success)
+            {
+                // The service returns false if the current password was incorrect or the user was not found.
+                return BadRequest(new { message = "Password change failed. Please check your current password." });
+            }
+
+            // Return 200 OK to indicate success.
+            return Ok(new { message = "Password changed successfully." });
         }
     }
 }

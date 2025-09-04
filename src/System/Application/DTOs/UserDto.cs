@@ -44,6 +44,11 @@ namespace StorIA.Core.Application.DTOs
         public string Role { get; set; }
 
         /// <summary>
+        /// The cost center to which the user belongs. Can be null.
+        /// </summary>
+        public string? CostCenter { get; set; }
+
+        /// <summary>
         /// Indicates whether the user's account is active.
         /// </summary>
         public bool IsActive { get; set; }

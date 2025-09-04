@@ -57,5 +57,19 @@ namespace StorIA.Core.Application.Interfaces
         /// <param name="queryParams">The parameters for searching, sorting, and pagination.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains a paginated result of all movement DTOs.</returns>
         Task<PagedResult<MovementDto>> GetAllMovementsAsync(QueryParameters queryParams);
+
+        /// <summary>
+        /// Gets a single movement by its unique identifier.
+        /// </summary>
+        /// <param name="id">The ID of the movement.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains the movement DTO if found; otherwise, null.</returns>
+        Task<MovementDto> GetMovementByIdAsync(Guid id);
+
+        /// <summary>
+        /// Gets the movement history for a specific recipient.
+        /// </summary>
+        /// <param name="recipientId">The ID of the recipient user.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains a collection of the recipient's movement DTOs.</returns>
+        Task<IEnumerable<MovementDto>> GetMovementsByRecipientIdAsync(Guid recipientId);
     }
 }

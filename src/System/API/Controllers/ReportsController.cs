@@ -50,21 +50,30 @@ namespace StorIA.API.Controllers
         [ProducesResponseType(typeof(IEnumerable<ItemDto>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetExpiringItems([FromQuery] int days = 30)
         {
-            var reportData = await _reportService.GetExpiringItemsReportAsync(days);
+            var reportData = await _reportService.GetExpiringItemsAsync(days);
             return Ok(reportData);
         }
 
         /// <summary>
-        /// Generates a report of all movements for a specific user.
+        /// Lists checkout movements whose expected return date has passed.
         /// </summary>
-        /// <param name="userId">The ID of the user for whom the report will be generated.</param>
-        /// <returns>The movement history for the specified user.</returns>
-        [HttpGet("movements-by-user/{userId:guid}")]
-        [ProducesResponseType(typeof(IEnumerable<MovementDto>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetMovementsByUser(Guid userId)
+        [HttpGet("overdue-returns")]
+        public async Task<IActionResult> GetOverdueReturns()
         {
-            var reportData = await _reportService.GetMovementsByUserReportAsync(userId);
-            return Ok(reportData);
+            var movements = await _reportService.GetOverdueReturnsAsync();
+            return Ok(movements);
+        }
+
+        /// <summary>
+        /// Calculates the total cost of items, grouped by cost center, within a date range.
+        /// </summary>
+        /// <param name="from">The start date for the report (YYYY-MM-DD).</param>
+        /// <param name="to">The end date for the report (YYYY-MM-DD).</param>
+        [HttpGet("cost-by-center")]
+        public async Task<IActionResult> GetCostByCenter([FromQuery] DateTime from, [FromQuery] DateTime to)
+        {
+            var report = await _reportService.GetCostByCenterAsync(from, to);
+            return Ok(report);
         }
     }
 }

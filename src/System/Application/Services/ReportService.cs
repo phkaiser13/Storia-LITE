@@ -42,38 +42,49 @@ namespace StorIA.Core.Application.Services
             _mapper = mapper;
         }
 
-        /// <summary>
-        /// Generates a report of items that are set to expire within a specified number of days.
-        /// </summary>
-        /// <param name="daysUntilExpiration">The number of days from now to check for expiration.</param>
-        /// <returns>A task that represents the asynchronous operation. The task result contains a collection of expiring items as ItemDto.</returns>
-        public async Task<IEnumerable<ItemDto>> GetExpiringItemsReportAsync(int daysUntilExpiration)
+        /// <inheritdoc />
+        public async Task<IEnumerable<ItemDto>> GetExpiringItemsAsync(int daysUntilExpiration)
         {
-            // Get the current UTC time to ensure consistency across time zones.
-            var today = DateTime.UtcNow;
-            // Calculate the future date limit for the expiration check.
+            var today = System.DateTime.UtcNow;
             var expirationLimitDate = today.AddDays(daysUntilExpiration);
 
-            // This query retrieves items that have an expiration date
-            // that is not null, is after today, and is before the calculated limit date.
-            var expiringItems = await _unitOfWork.Items.GetByExpiryDateRangeAsync(today, expirationLimitDate);
+            var expiringItems = await _unitOfWork.Items.Find(i => i.ExpiryDate != null && i.ExpiryDate > today && i.ExpiryDate <= expirationLimitDate);
 
-            // Map the retrieved entity objects to Data Transfer Objects (DTOs).
             return _mapper.Map<IEnumerable<ItemDto>>(expiringItems);
         }
 
-        /// <summary>
-        /// Generates a report of all inventory movements associated with a specific user.
-        /// </summary>
-        /// <param name="userId">The unique identifier of the user.</param>
-        /// <returns>A task that represents the asynchronous operation. The task result contains a collection of user movements as MovementDto.</returns>
-        public async Task<IEnumerable<MovementDto>> GetMovementsByUserReportAsync(Guid userId)
+        /// <inheritdoc />
+        public async Task<IEnumerable<MovementDto>> GetOverdueReturnsAsync()
         {
-            // Reuses the existing logic from the movement repository to fetch data.
-            var movements = await _unitOfWork.Movements.GetByUserIdAsync(userId);
+            var today = System.DateTime.UtcNow;
 
-            // Map the retrieved entity objects to Data Transfer Objects (DTOs).
-            return _mapper.Map<IEnumerable<MovementDto>>(movements);
+            var overdueMovements = await _unitOfWork.Movements.Find(
+                m => m.Type == MovementType.Saida && m.ExpectedReturnDate != null && m.ExpectedReturnDate < today
+            );
+
+            return _mapper.Map<IEnumerable<MovementDto>>(overdueMovements);
+        }
+
+        /// <inheritdoc />
+        public async Task<IEnumerable<CostByCenterDto>> GetCostByCenterAsync(System.DateTime fromDate, System.DateTime toDate)
+        {
+            var movements = await _unitOfWork.Movements.Find(
+                m => m.Type == MovementType.Saida && m.MovementDate >= fromDate && m.MovementDate <= toDate,
+                includes: new[] { "Item", "Recipient" }
+            );
+
+            var costByCenter = movements
+                .Where(m => m.Recipient?.CostCenter != null && m.Item?.Cost != null)
+                .GroupBy(m => m.Recipient.CostCenter)
+                .Select(group => new CostByCenterDto
+                {
+                    costCenter = group.Key,
+                    totalCost = group.Sum(m => m.Quantity * m.Item.Cost.Value),
+                    movements = _mapper.Map<List<MovementDto>>(group.ToList())
+                })
+                .ToList();
+
+            return costByCenter;
         }
     }
 }

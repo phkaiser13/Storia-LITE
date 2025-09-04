@@ -158,5 +158,41 @@ namespace StorIA.Core.Application.Services
 
             return new RefreshToken(tokenString, userId, expiryDate);
         }
+
+        /// <summary>
+        /// Changes the password for a specified user.
+        /// </summary>
+        /// <param name="userId">The ID of the user.</param>
+        /// <param name="currentPassword">The user's current password for verification.</param>
+        /// <param name="newPassword">The new password to be set.</param>
+        /// <returns>
+        /// True if the password was successfully updated; otherwise, false.
+        /// </returns>
+        public async Task<bool> ChangePasswordAsync(Guid userId, string currentPassword, string newPassword)
+        {
+            // Retrieve the user from the database.
+            var user = await _unitOfWork.Users.GetByIdAsync(userId);
+            if (user == null)
+            {
+                // User not found, cannot change password.
+                return false;
+            }
+
+            // Verify that the current password is correct.
+            if (!_passwordHasher.VerifyPassword(user.PasswordHash, currentPassword))
+            {
+                // Incorrect current password.
+                return false;
+            }
+
+            // Hash the new password and update the user entity.
+            user.PasswordHash = _passwordHasher.HashPassword(newPassword);
+            _unitOfWork.Users.Update(user);
+
+            // Persist the changes to the database.
+            await _unitOfWork.CompleteAsync();
+
+            return true;
+        }
     }
 }

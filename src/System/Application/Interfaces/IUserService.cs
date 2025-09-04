@@ -37,11 +37,15 @@ namespace StorIA.Core.Application.Interfaces
         /// </returns>
         Task<UserDto> RegisterUserAsync(RegisterUserRequestDto request);
 
-        // Note for future development: Additional methods can be implemented here.
-        // Task<UserDto> GetUserByIdAsync(Guid id);
-        // Task<IEnumerable<UserDto>> GetAllUsersAsync();
-        // Task UpdateUserAsync(Guid id, UpdateUserRequestDto request);
-        // Task DeleteUserAsync(Guid id);
+        /// <summary>
+        /// Retrieves a specific user by their unique identifier.
+        /// </summary>
+        /// <param name="id">The unique identifier of the user.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation. The task result contains the user's DTO
+        /// if found; otherwise, returns null.
+        /// </returns>
+        Task<UserDto> GetUserByIdAsync(Guid id);
 
         /// <summary>
         /// Updates the profile details of a specific user.

@@ -46,5 +46,17 @@ namespace StorIA.Core.Application.Interfaces
         /// Returns null if the refresh token is invalid, expired, or has been revoked.
         /// </returns>
         Task<AuthResultDto> RefreshTokenAsync(string refreshToken);
+
+        /// <summary>
+        /// Changes the password for the currently authenticated user.
+        /// </summary>
+        /// <param name="userId">The ID of the user changing their password.</param>
+        /// <param name="currentPassword">The user's current password.</param>
+        /// <param name="newPassword">The new password to set.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation. The task result is true if the password
+        /// was changed successfully, and false otherwise (e.g., incorrect current password).
+        /// </returns>
+        Task<bool> ChangePasswordAsync(Guid userId, string currentPassword, string newPassword);
     }
 }

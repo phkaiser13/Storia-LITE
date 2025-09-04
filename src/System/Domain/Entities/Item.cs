@@ -75,6 +75,11 @@ namespace StorIA.Core.Domain.Entities
         /// </summary>
         public DateTime? UpdatedAt { get; private set; }
 
+        /// <summary>
+        /// Gets the unit cost of the item. Can be null if not applicable.
+        /// </summary>
+        public decimal? Cost { get; private set; }
+
         // Private parameterless constructor for ORM frameworks like EF Core.
         private Item() { }
 

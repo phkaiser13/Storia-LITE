@@ -33,39 +33,56 @@ namespace StorIA.Core.Application.DTOs
         public Guid ItemId { get; set; }
 
         /// <summary>
-        /// The name of the moved item.
-        /// </summary>
-        public string ItemName { get; set; }
-
-        /// <summary>
-        /// The SKU of the moved item.
-        /// </summary>
-        public string ItemSku { get; set; }
-
-        /// <summary>
-        /// The ID of the user who performed the movement.
+        /// The ID of the user who registered the movement.
         /// </summary>
         public Guid UserId { get; set; }
 
         /// <summary>
-        /// The full name of the user who performed the movement.
+        /// The quantity of items moved. Can be positive (check-in) or negative (check-out).
         /// </summary>
-        public string UserFullName { get; set; }
+        public int quantity { get; set; }
 
         /// <summary>
-        /// The type of movement (e.g., "Dispatch", "Return").
+        /// The type of movement ('CHECKIN' or 'CHECKOUT').
         /// </summary>
-        public string Type { get; set; }
-
-        /// <summary>
-        /// The quantity of items moved.
-        /// </summary>
-        public int Quantity { get; set; }
+        public string type { get; set; }
 
         /// <summary>
         /// The date and time when the movement occurred.
         /// </summary>
-        public DateTime MovementDate { get; set; }
+        public DateTime date { get; set; }
+
+        /// <summary>
+        /// The full Item object, nested for convenience.
+        /// </summary>
+        public ItemDto? item { get; set; }
+
+        /// <summary>
+        /// The full User object of the operator, nested for convenience.
+        /// </summary>
+        public UserDto? user { get; set; }
+
+        /// <summary>
+        /// The ID of the collaborator who received the item (for 'CHECKOUT' of PPE).
+        /// </summary>
+        public Guid? recipientId { get; set; }
+
+        /// <summary>
+        /// The full User object of the recipient, nested for convenience.
+        /// </summary>
+        public UserDto? recipient { get; set; }
+
+        /// <summary>
+        /// The digital signature as a Base64 or Data URL string.
+        /// </summary>
+        public string? digitalSignature { get; set; }
+
+        /// <summary>
+        /// The expected return date for items that are lent (e.g., PPE).
+        /// </summary>
+        public DateTime? expectedReturnDate { get; set; }
+
+        // --- Existing properties that are not in the spec but can be useful ---
 
         /// <summary>
         /// Optional observations or notes about the movement.

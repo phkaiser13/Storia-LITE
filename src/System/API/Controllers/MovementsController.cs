@@ -28,7 +28,7 @@ namespace StorIA.API.Controllers
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize(Roles = "Almoxarife,RH")] // Restricts access to this controller to users with 'Almoxarife' or 'RH' roles.
+    [Authorize(Roles = "Almoxarife")] // Restricts access to this controller to users with 'Almoxarife' role.
     public class MovementsController : ControllerBase
     {
         private readonly IMovementService _movementService;
@@ -92,7 +92,7 @@ namespace StorIA.API.Controllers
         /// </summary>
         /// <param name="itemId">The GUID of the item.</param>
         /// <returns>A list of movements associated with the specified item.</returns>
-        [HttpGet("by-item/{itemId:guid}")]
+        [HttpGet("item/{itemId:guid}")]
         [ProducesResponseType(typeof(IEnumerable<MovementDto>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetMovementsByItem(Guid itemId)
         {
@@ -101,15 +101,28 @@ namespace StorIA.API.Controllers
         }
 
         /// <summary>
-        /// Retrieves the movement history for a specific user.
+        /// Retrieves the movement history initiated by a specific operator (user).
         /// </summary>
-        /// <param name="userId">The GUID of the user.</param>
+        /// <param name="userId">The GUID of the user who registered the movements.</param>
         /// <returns>A list of movements associated with the specified user.</returns>
-        [HttpGet("by-user/{userId:guid}")]
+        [HttpGet("by-operator/{userId:guid}")]
         [ProducesResponseType(typeof(IEnumerable<MovementDto>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetMovementsByUser(Guid userId)
         {
             var movements = await _movementService.GetMovementsByUserIdAsync(userId);
+            return Ok(movements);
+        }
+
+        /// <summary>
+        /// Retrieves the movement history for a specific recipient (user).
+        /// </summary>
+        /// <param name="recipientId">The GUID of the user who received items.</param>
+        /// <returns>A list of movements where the user was the recipient.</returns>
+        [HttpGet("recipient/{recipientId:guid}")]
+        [ProducesResponseType(typeof(IEnumerable<MovementDto>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetMovementsByRecipient(Guid recipientId)
+        {
+            var movements = await _movementService.GetMovementsByRecipientIdAsync(recipientId);
             return Ok(movements);
         }
 
@@ -125,11 +138,12 @@ namespace StorIA.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetMovementById(Guid id)
         {
-            // This method needs to be implemented in IMovementService and MovementService.
-            // For now, it returns a placeholder.
-            // Awaiting implementation in the service layer.
-            await Task.CompletedTask; // Placeholder for async operation.
-            return Ok(new { Message = "Endpoint to be implemented." });
+            var movement = await _movementService.GetMovementByIdAsync(id);
+            if (movement == null)
+            {
+                return NotFound();
+            }
+            return Ok(movement);
         }
 
         /// <summary>

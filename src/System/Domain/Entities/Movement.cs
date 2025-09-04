@@ -75,6 +75,28 @@ namespace StorIA.Core.Domain.Entities
         /// </summary>
         public string Observations { get; private set; }
 
+        /// <summary>
+        /// Gets the ID of the user who received the item (for checkouts).
+        /// This is a foreign key to the User entity. Can be null for simple stock adjustments.
+        /// </summary>
+        public Guid? RecipientId { get; private set; }
+
+        /// <summary>
+        /// Gets the User instance of the recipient.
+        /// This is a navigation property for EF Core.
+        /// </summary>
+        public virtual User Recipient { get; private set; }
+
+        /// <summary>
+        /// Gets the date by which a checked-out item is expected to be returned.
+        /// </summary>
+        public DateTime? ExpectedReturnDate { get; private set; }
+
+        /// <summary>
+        /// Gets the digital signature captured upon checkout, stored as a data URL.
+        /// </summary>
+        public string DigitalSignature { get; private set; }
+
         // Private parameterless constructor for ORM frameworks like EF Core.
         private Movement() { }
 

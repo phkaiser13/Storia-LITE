@@ -159,10 +159,27 @@ namespace StorIA.API.Controllers
             return Ok(pagedResult);
         }
 
-        // TODO: Implement the GetUserById endpoint to allow the CreatedAtAction to function correctly.
-        // Example of what it might look like:
-        // [HttpGet("{id}")]
-        // [Authorize(Roles = "RH")] // Or other appropriate authorization.
-        // public async Task<IActionResult> GetUserById(Guid id) { ... }
+        /// <summary>
+        /// Retrieves a single user by their unique ID.
+        /// </summary>
+        /// <param name="id">The GUID of the user to retrieve.</param>
+        /// <remarks>
+        /// Access is restricted to users with the "RH" (HR) role.
+        /// </remarks>
+        [HttpGet("{id}", Name = "GetUserById")]
+        [Authorize(Roles = "RH")]
+        [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetUserById(Guid id)
+        {
+            var user = await _userService.GetUserByIdAsync(id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(user);
+        }
     }
 }

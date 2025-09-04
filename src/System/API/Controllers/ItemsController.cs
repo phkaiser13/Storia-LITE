@@ -128,7 +128,7 @@ namespace StorIA.API.Controllers
         /// <param name="id">The GUID of the item to delete.</param>
         /// <returns>A 204 No Content response if successful; otherwise, a relevant error response.</returns>
         [HttpDelete("{id:guid}")]
-        [Authorize(Roles = "RH")] // Only users with the 'RH' role can delete items (example business rule).
+        [Authorize(Roles = "Almoxarife,RH")] // Both Warehouse Managers and HR can delete items.
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]

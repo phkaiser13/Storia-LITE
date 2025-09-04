@@ -79,6 +79,13 @@ namespace StorIA.Core.Application.Services
         }
 
         /// <inheritdoc />
+        public async Task<UserDto> GetUserByIdAsync(Guid id)
+        {
+            var user = await _unitOfWork.Users.GetByIdAsync(id);
+            return _mapper.Map<UserDto>(user);
+        }
+
+        /// <inheritdoc />
         public async Task<UserDto> UpdateProfileAsync(Guid userId, UpdateProfileRequestDto request)
         {
             // 1. Fetch the user by their ID.

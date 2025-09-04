@@ -154,5 +154,21 @@ namespace StorIA.Core.Application.Services
                 pagedMovements.PageSize
             );
         }
+
+        /// <inheritdoc />
+        public async Task<MovementDto> GetMovementByIdAsync(Guid id)
+        {
+            var movement = await _unitOfWork.Movements.GetByIdAsync(id);
+            return _mapper.Map<MovementDto>(movement);
+        }
+
+        /// <inheritdoc />
+        public async Task<IEnumerable<MovementDto>> GetMovementsByRecipientIdAsync(Guid recipientId)
+        {
+            // This assumes a method GetByRecipientIdAsync exists on the repository.
+            // If not, it would need to be added to IMovementRepository and its implementation.
+            var movements = await _unitOfWork.Movements.Find(m => m.RecipientId == recipientId);
+            return _mapper.Map<IEnumerable<MovementDto>>(movements);
+        }
     }
 }

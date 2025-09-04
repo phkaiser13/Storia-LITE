@@ -31,14 +31,20 @@ namespace StorIA.Core.Application.Interfaces
         /// Items expiring between today and today + daysUntilExpiration will be returned.
         /// </param>
         /// <returns>A task that represents the asynchronous operation. The task result contains a collection of DTOs for items that are about to expire.</returns>
-        Task<IEnumerable<ItemDto>> GetExpiringItemsReportAsync(int daysUntilExpiration);
+        Task<IEnumerable<ItemDto>> GetExpiringItemsAsync(int daysUntilExpiration);
 
         /// <summary>
-        /// Generates a report of all movements made by a specific user.
-        /// (Note: This method is effectively covered by IMovementService but can be centralized here for clarity).
+        /// Gets a list of checkout movements for which the expected return date has passed.
         /// </summary>
-        /// <param name="userId">The ID of the user.</param>
-        /// <returns>A task that represents the asynchronous operation. The task result contains a collection of the user's movement DTOs.</returns>
-        Task<IEnumerable<MovementDto>> GetMovementsByUserReportAsync(Guid userId);
+        /// <returns>A collection of overdue movement records.</returns>
+        Task<IEnumerable<MovementDto>> GetOverdueReturnsAsync();
+
+        /// <summary>
+        /// Calculates the total cost of items dispatched, grouped by the recipient's cost center, within a date range.
+        /// </summary>
+        /// <param name="fromDate">The start date of the reporting period.</param>
+        /// <param name="toDate">The end date of the reporting period.</param>
+        /// <returns>A collection of DTOs, each representing the total cost for a specific cost center.</returns>
+        Task<IEnumerable<CostByCenterDto>> GetCostByCenterAsync(DateTime fromDate, DateTime toDate);
     }
 }
