@@ -18,7 +18,7 @@ jobs:
         include:
         - platform: 'macos-13'       # equivalente a Ventura
           args: '--target aarch64-apple-darwin'
-        - platform: 'macos-12'       # equivalente a Monterey
+        - platform: 'macos-latest'       # equivalente a Monterey
           args: '--target x86_64-apple-darwin'
         - platform: 'windows-2022'
           args: '--target x86_64-pc-windows-msvc'
